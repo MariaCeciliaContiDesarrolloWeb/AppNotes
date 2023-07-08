@@ -28,6 +28,18 @@ const addNote = () =>{
    console.log(get('notes'))
 }
 
+const showNotes = (notes) =>{
+   for( const {note, date}  of notes){
+      $('#showNotes').innerHTML += `
+         <tr>
+            <td>${date}</td>
+            <td>${note}</td>
+         </tr>
+      `
+   } 
+
+}
+
 const initialize = () =>{
    $('#buttonAddNote').addEventListener('click',  (e) =>{
       e.preventDefault()
@@ -36,6 +48,7 @@ const initialize = () =>{
       addNote()
    })
    allNotes()
+   showNotes(get('notes'))
    
 }
 
