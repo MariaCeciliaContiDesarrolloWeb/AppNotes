@@ -20,11 +20,20 @@ const notesObject = () =>{
    }
 }
 
+const addNote = () =>{
+   const savedNotes = get('notes')
+   const newNote = notesObject()
+   savedNotes.push(newNote)
+   set('notes', savedNotes)
+   console.log(get('notes'))
+}
+
 const initialize = () =>{
    $('#buttonAddNote').addEventListener('click',  (e) =>{
       e.preventDefault()
       validateForm()
       console.log(notesObject())
+      addNote()
    })
    allNotes()
    
