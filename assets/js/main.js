@@ -29,16 +29,26 @@ const addNote = () =>{
 }
 
 const showNotes = (notes) =>{
-   for( const {note, date}  of notes){
+   $('#showNotes').innerHTML = ''
+   for( const {id, note, date}  of notes){
       $('#showNotes').innerHTML += `
          <tr>
             <td>${date}</td>
             <td>${note}</td>
+            <td onclick="deleteNote('${id}')">Eliminar</td>
          </tr>
       `
    } 
 
 }
+
+
+const deleteNote = (id) =>{
+   const deleteNote = get('notes').filter(note => note.id != id)
+   set('notes', deleteNote)
+   showNotes(get('notes'))
+}
+
 
 const initialize = () =>{
    $('#buttonAddNote').addEventListener('click',  (e) =>{
