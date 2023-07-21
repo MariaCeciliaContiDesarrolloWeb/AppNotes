@@ -30,18 +30,19 @@ const addNote = () =>{
 
 const showNotes = (notes) =>{
    $('#showNotes').innerHTML = ''
-   for( const {id, note, date}  of notes){
-      $('#showNotes').innerHTML += `
-         <tr>
-            <td>${date}</td>
-            <td>${note}</td>
-            <td onclick="deleteNote('${id}')">Eliminar</td>
-         </tr>
-      `
-   } 
-
+   if(notes.length){
+      for( const {id, note, date}  of notes){
+         $('#showNotes').innerHTML += `
+            <tr>
+               <td>${date}</td>
+               <td>${note}</td>
+               <td onclick="deleteNote('${id}')">Eliminar</td>
+               <td onclick="editNoteForm('${id}')">Editar</td>
+            </tr>
+         `
+      } 
+   }
 }
-
 
 const deleteNote = (id) =>{
    const deleteNote = get('notes').filter(note => note.id != id)
@@ -49,13 +50,35 @@ const deleteNote = (id) =>{
    showNotes(get('notes'))
 }
 
+const editNoteForm = (id) =>{
+   $('.btnEditNote').setAttribute('data-id', id)
+   const editThisNot = get('notes').find(note => note.id === id)
+   $("#note").value = editThisNot.note
+}
+
+const editNote = () =>{
+   const idNote = $('.btnEditNote').getAttribute('data-id')
+   const newEditedNotes = get('notes').map(note => {
+      if(idNote ===  note.id){
+         return notesObject()
+      }
+      return note
+   })
+   set('notes', newEditedNotes)
+}
+
 
 const initialize = () =>{
    $('#buttonAddNote').addEventListener('click',  (e) =>{
       e.preventDefault()
       validateForm()
-      console.log(notesObject())
       addNote()
+      showNotes(get('notes'))
+   })
+   $('.btnEditNote').addEventListener('click', (e) =>{
+      e.preventDefault()
+      editNote()
+      showNotes(get('notes'))
    })
    allNotes()
    showNotes(get('notes'))
